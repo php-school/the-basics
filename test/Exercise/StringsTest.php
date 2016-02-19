@@ -4,7 +4,7 @@ namespace PhpSchool\BackToBasicsTest\Exercise;
 
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
-use PhpSchool\BackToBasics\Exercise\Strings;
+use PhpSchool\BackToBasics\Exercise\FirstStringsFirst;
 use PhpSchool\PhpWorkshop\Exercise\ExerciseType;
 use PhpSchool\PhpWorkshop\Result\Failure;
 use PhpSchool\PhpWorkshop\Result\Success;
@@ -29,7 +29,7 @@ class StringsTest extends PHPUnit_Framework_TestCase
 
     public function testStringExercise()
     {
-        $exercise = new Strings($this->parser);
+        $exercise = new FirstStringsFirst($this->parser);
 
         $this->assertEquals('First Strings First', $exercise->getName());
         $this->assertEquals('Taking your first look at PHP strings and concatination', $exercise->getDescription());
@@ -42,7 +42,7 @@ class StringsTest extends PHPUnit_Framework_TestCase
 
     public function testCheckFailsWithNoStringConcat()
     {
-        $exercise = new Strings($this->parser);
+        $exercise = new FirstStringsFirst($this->parser);
         $result   = $exercise->check(__DIR__ . '/../res/strings/without-concat.php');
 
         $this->assertInstanceOf(Failure::class, $result);
@@ -52,7 +52,7 @@ class StringsTest extends PHPUnit_Framework_TestCase
 
     public function testCheckPassesWithConcatPerformed()
     {
-        $exercise = new Strings($this->parser);
+        $exercise = new FirstStringsFirst($this->parser);
         $result   = $exercise->check(__DIR__ . '/../res/strings/correct-solution.php');
 
         $this->assertInstanceOf(Success::class, $result);

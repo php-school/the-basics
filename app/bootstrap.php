@@ -20,14 +20,14 @@ switch (true) {
         throw new RuntimeException('Unable to locate Composer autoloader; please run "composer install".');
 }
 
-use PhpSchool\BackToBasics\Exercise\Strings;
+use PhpSchool\BackToBasics\Exercise\FirstStringsFirst;
 use PhpSchool\BackToBasics\Exercise\Variables;
 use PhpSchool\PhpWorkshop\Application;
 
 $app = new Application(null, __DIR__ . '/config.php');
 
 $app->addExercise(Variables::class);
-$app->addExercise(Strings::class);
+$app->addExercise(FirstStringsFirst::class);
 
 $art = <<<ART
     _ __ _

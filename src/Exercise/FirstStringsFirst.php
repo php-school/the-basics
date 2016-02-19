@@ -16,10 +16,10 @@ use PhpSchool\PhpWorkshop\Result\ResultInterface;
 use PhpSchool\PhpWorkshop\Result\Success;
 
 /**
- * Class Strings
+ * Class FirstStringsFirst
  * @author Michael Woodward <mikeymike.mw@gmail.com>
  */
-class Strings extends AbstractExercise implements ExerciseInterface, CliExercise, SelfCheck
+class FirstStringsFirst extends AbstractExercise implements ExerciseInterface, CliExercise, SelfCheck
 {
     /**
      * @var Parser
