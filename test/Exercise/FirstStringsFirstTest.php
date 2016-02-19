@@ -12,10 +12,10 @@ use PhpSchool\PhpWorkshop\Solution\SolutionInterface;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Class StringsTest
+ * Class FirstStringsFirstTest
  * @author Michael Woodward <mikeymike.mw@gmail.com>
  */
-class StringsTest extends PHPUnit_Framework_TestCase
+class FirstStringsFirstTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Parser
@@ -43,17 +43,26 @@ class StringsTest extends PHPUnit_Framework_TestCase
     public function testCheckFailsWithNoStringConcat()
     {
         $exercise = new FirstStringsFirst($this->parser);
-        $result   = $exercise->check(__DIR__ . '/../res/strings/without-concat.php');
+        $result   = $exercise->check(__DIR__ . '/../res/first-strings-first/without-concat.php');
 
         $this->assertInstanceOf(Failure::class, $result);
         $this->assertEquals('No string concat performed', $result->getReason());
         $this->assertEquals('First Strings First', $result->getCheckName());
     }
 
-    public function testCheckPassesWithConcatPerformed()
+    public function testCheckPassesWithConcatPerformedOnEcho()
     {
         $exercise = new FirstStringsFirst($this->parser);
-        $result   = $exercise->check(__DIR__ . '/../res/strings/correct-solution.php');
+        $result   = $exercise->check(__DIR__ . '/../res/first-strings-first/echo-correct-solution.php');
+
+        $this->assertInstanceOf(Success::class, $result);
+        $this->assertEquals('First Strings First', $result->getCheckName());
+    }
+
+    public function testCheckPassesWithConcatPerformedOnVariableAssignment()
+    {
+        $exercise = new FirstStringsFirst($this->parser);
+        $result   = $exercise->check(__DIR__ . '/../res/first-strings-first/assign-correct-solution.php');
 
         $this->assertInstanceOf(Success::class, $result);
         $this->assertEquals('First Strings First', $result->getCheckName());
