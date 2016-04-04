@@ -2,10 +2,13 @@
 
 namespace PhpSchool\BackToBasics\Exercise;
 
+use Error;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Stmt;
+use PhpParser\NodeTraverser;
 use PhpParser\Parser;
+use PhpSchool\BackToBasics\NodeVisitor\RequiredNodeVisitor;
 use PhpSchool\PhpWorkshop\Exercise\AbstractExercise;
 use PhpSchool\PhpWorkshop\Exercise\CliExercise;
 use PhpSchool\PhpWorkshop\Exercise\ExerciseInterface;
@@ -74,28 +77,19 @@ class FirstStringsFirst extends AbstractExercise implements ExerciseInterface, C
      */
     public function check($fileName)
     {
-        $statements = $this->parser->parse(file_get_contents($fileName));
-
-        $concat = null;
-        foreach ($statements as $statement) {
-            // On assignment
-            if ($statement instanceof Expr && $statement->expr instanceof Concat) {
-                $concat = true;
-                break;
-            }
-
-            // On echo
-            if ($statement instanceof Stmt) {
-                foreach ($statement->exprs as $expr) {
-                    if ($expr instanceof Concat) {
-                        $concat = true;
-                        break 2;
-                    }
-                }
-            }
+        try {
+            $ast = $this->parser->parse(file_get_contents($fileName));
+        } catch (Error $e) {
+            return Failure::fromCheckAndCodeParseFailure($this, $e, $fileName);
         }
 
-        if (null === $concat) {
+        $nodeVisitor = new RequiredNodeVisitor([Concat::class]);
+        $traverser   = new NodeTraverser();
+
+        $traverser->addVisitor($nodeVisitor);
+        $traverser->traverse($ast);
+
+        if (!$nodeVisitor->hasUsedRequiredNodes()) {
             return Failure::fromNameAndReason($this->getName(), 'No string concat performed');
         }
 
