@@ -2,8 +2,11 @@
 
 namespace PhpSchool\BackToBasics\Exercise;
 
+use Error;
 use PhpParser\Node\Expr\Assign;
+use PhpParser\NodeTraverser;
 use PhpParser\Parser;
+use PhpSchool\BackToBasics\NodeVisitor\RequiredNodeVisitor;
 use PhpSchool\PhpWorkshop\Exercise\AbstractExercise;
 use PhpSchool\PhpWorkshop\Exercise\CliExercise;
 use PhpSchool\PhpWorkshop\Exercise\ExerciseInterface;
@@ -37,7 +40,7 @@ class Variables extends AbstractExercise implements ExerciseInterface, CliExerci
      */
     public function getName()
     {
-        return 'Variables';
+        return 'Variables are a Devs Best Friend!';
     }
 
     /**
@@ -72,17 +75,19 @@ class Variables extends AbstractExercise implements ExerciseInterface, CliExerci
      */
     public function check($fileName)
     {
-        $statements = $this->parser->parse(file_get_contents($fileName));
-
-        $variable = null;
-        foreach ($statements as $statement) {
-            if ($statement instanceof Assign) {
-                $variable = true;
-                break;
-            }
+        try {
+            $ast = $this->parser->parse(file_get_contents($fileName));
+        } catch (Error $e) {
+            return Failure::fromCheckAndCodeParseFailure($this, $e, $fileName);
         }
 
-        if (null === $variable) {
+        $nodeVisitor = new RequiredNodeVisitor([Assign::class]);
+        $traverser   = new NodeTraverser();
+
+        $traverser->addVisitor($nodeVisitor);
+        $traverser->traverse($ast);
+
+        if (!$nodeVisitor->hasUsedRequiredNodes()) {
             return Failure::fromNameAndReason($this->getName(), 'No variable declared');
         }
 

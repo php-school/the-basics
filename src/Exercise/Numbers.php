@@ -39,7 +39,7 @@ class Numbers extends AbstractExercise implements ExerciseInterface, CliExercise
      */
     public function getName()
     {
-        return 'Numbers';
+        return 'Numbers... Numbers... Numbers...';
     }
 
     /**

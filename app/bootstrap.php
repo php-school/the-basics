@@ -21,6 +21,7 @@ switch (true) {
 }
 
 use PhpSchool\BackToBasics\Exercise\FirstStringsFirst;
+use PhpSchool\BackToBasics\Exercise\Numbers;
 use PhpSchool\BackToBasics\Exercise\Variables;
 use PhpSchool\PhpWorkshop\Application;
 
@@ -28,6 +29,7 @@ $app = new Application(null, __DIR__ . '/config.php');
 
 $app->addExercise(Variables::class);
 $app->addExercise(FirstStringsFirst::class);
+$app->addExercise(Numbers::class);
 
 $art = <<<ART
     _ __ _

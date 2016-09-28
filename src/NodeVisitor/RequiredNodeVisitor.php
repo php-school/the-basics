@@ -3,7 +3,6 @@
 namespace PhpSchool\BackToBasics\NodeVisitor;
 
 use PhpParser\Node;
-use PhpParser\NodeAbstract;
 use PhpParser\NodeVisitorAbstract;
 
 /**
