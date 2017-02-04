@@ -3,9 +3,7 @@
 namespace PhpSchool\BackToBasics\Exercise;
 
 use Error;
-use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\Concat;
-use PhpParser\Node\Stmt;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use PhpSchool\BackToBasics\NodeVisitor\RequiredNodeVisitor;
@@ -14,6 +12,7 @@ use PhpSchool\PhpWorkshop\Exercise\CliExercise;
 use PhpSchool\PhpWorkshop\Exercise\ExerciseInterface;
 use PhpSchool\PhpWorkshop\Exercise\ExerciseType;
 use PhpSchool\PhpWorkshop\ExerciseCheck\SelfCheck;
+use PhpSchool\PhpWorkshop\Input\Input;
 use PhpSchool\PhpWorkshop\Result\Failure;
 use PhpSchool\PhpWorkshop\Result\ResultInterface;
 use PhpSchool\PhpWorkshop\Result\Success;
@@ -72,15 +71,17 @@ class FirstStringsFirst extends AbstractExercise implements ExerciseInterface, C
     /**
      * Ensure a variable was declared
      *
-     * @param string $fileName
+     * @param Input $input
      * @return ResultInterface
      */
-    public function check($fileName)
+    public function check(Input $input)
     {
+        $program = $input->getArgument('program');
+
         try {
-            $ast = $this->parser->parse(file_get_contents($fileName));
+            $ast = $this->parser->parse(file_get_contents($program));
         } catch (Error $e) {
-            return Failure::fromCheckAndCodeParseFailure($this, $e, $fileName);
+            return Failure::fromCheckAndCodeParseFailure($this, $e, $program);
         }
 
         $nodeVisitor = new RequiredNodeVisitor([Concat::class]);

@@ -25,7 +25,7 @@ use PhpSchool\BackToBasics\Exercise\Numbers;
 use PhpSchool\BackToBasics\Exercise\Variables;
 use PhpSchool\PhpWorkshop\Application;
 
-$app = new Application('The Basics', __DIR__ . '/config.php');
+$app = new Application('Back to Basics', __DIR__ . '/config.php');
 
 $app->addExercise(Variables::class);
 $app->addExercise(FirstStringsFirst::class);
