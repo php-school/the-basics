@@ -12,9 +12,11 @@ use PhpSchool\PhpWorkshop\Exercise\CliExercise;
 use PhpSchool\PhpWorkshop\Exercise\ExerciseInterface;
 use PhpSchool\PhpWorkshop\Exercise\ExerciseType;
 use PhpSchool\PhpWorkshop\ExerciseCheck\SelfCheck;
+use PhpSchool\PhpWorkshop\Input\Input;
 use PhpSchool\PhpWorkshop\Result\Failure;
 use PhpSchool\PhpWorkshop\Result\ResultInterface;
 use PhpSchool\PhpWorkshop\Result\Success;
+use PhpSchool\PhpWorkshop\Solution\SingleFileSolution;
 
 /**
  * Class Variables
@@ -52,6 +54,28 @@ class Variables extends AbstractExercise implements ExerciseInterface, CliExerci
     }
 
     /**
+     * Overwrite to provdide simpler naming
+     *
+     * @return string
+     */
+    public function getSolution()
+    {
+        return SingleFileSolution::fromFile(
+            realpath(sprintf('%s/../../exercises/variables/solution/solution.php', __DIR__))
+        );
+    }
+
+    /**
+     * Overwrite to provdide simpler naming
+     *
+     * @return string
+     */
+    public function getProblem()
+    {
+        return sprintf('%s/../../exercises/%s/problem/problem.md', __DIR__, 'variables');
+    }
+
+    /**
      * @return string[]
      */
     public function getArgs()
@@ -70,15 +94,17 @@ class Variables extends AbstractExercise implements ExerciseInterface, CliExerci
     /**
      * Ensure a variable was declared
      *
-     * @param string $fileName
+     * @param Input $input
      * @return ResultInterface
      */
-    public function check($fileName)
+    public function check(Input $input)
     {
+        $program = $input->getArgument('program');
+
         try {
-            $ast = $this->parser->parse(file_get_contents($fileName));
+            $ast = $this->parser->parse(file_get_contents($program));
         } catch (Error $e) {
-            return Failure::fromCheckAndCodeParseFailure($this, $e, $fileName);
+            return Failure::fromCheckAndCodeParseFailure($this, $e, $program);
         }
 
         $nodeVisitor = new RequiredNodeVisitor([Assign::class]);

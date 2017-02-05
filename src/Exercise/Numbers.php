@@ -2,18 +2,18 @@
 
 namespace PhpSchool\BackToBasics\Exercise;
 
-use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Assign;
-use PhpParser\Node\Stmt;
 use PhpParser\Parser;
 use PhpSchool\PhpWorkshop\Exercise\AbstractExercise;
 use PhpSchool\PhpWorkshop\Exercise\CliExercise;
 use PhpSchool\PhpWorkshop\Exercise\ExerciseInterface;
 use PhpSchool\PhpWorkshop\Exercise\ExerciseType;
 use PhpSchool\PhpWorkshop\ExerciseCheck\SelfCheck;
+use PhpSchool\PhpWorkshop\Input\Input;
 use PhpSchool\PhpWorkshop\Result\Failure;
 use PhpSchool\PhpWorkshop\Result\ResultInterface;
 use PhpSchool\PhpWorkshop\Result\Success;
+use PhpSchool\PhpWorkshop\Solution\SingleFileSolution;
 
 /**
  * Class Numbers
@@ -51,6 +51,28 @@ class Numbers extends AbstractExercise implements ExerciseInterface, CliExercise
     }
 
     /**
+     * Overwrite to provdide simpler naming
+     *
+     * @return string
+     */
+    public function getSolution()
+    {
+        return SingleFileSolution::fromFile(
+            realpath(sprintf('%s/../../exercises/numbers/solution/solution.php', __DIR__))
+        );
+    }
+
+    /**
+     * Overwrite to provdide simpler naming
+     *
+     * @return string
+     */
+    public function getProblem()
+    {
+        return sprintf('%s/../../exercises/%s/problem/problem.md', __DIR__, 'numbers');
+    }
+
+    /**
      * @return string[]
      */
     public function getArgs()
@@ -69,12 +91,12 @@ class Numbers extends AbstractExercise implements ExerciseInterface, CliExercise
     /**
      * Ensure a variable was declared
      *
-     * @param string $fileName
+     * @param Input $input
      * @return ResultInterface
      */
-    public function check($fileName)
+    public function check(Input $input)
     {
-        $statements = $this->parser->parse(file_get_contents($fileName));
+        $statements = $this->parser->parse(file_get_contents($input->getArgument('program')));
 
         $variable = null;
         foreach ($statements as $statement) {
